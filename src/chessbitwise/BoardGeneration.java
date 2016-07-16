@@ -26,7 +26,7 @@ public class BoardGeneration {
         //0   1   2   3   4   5   6   7
         //a   b   c   d   e   f   g   h
     };
-        arrayToBitBoards(chessBoard,WP,WN,WB,WR,WQ,WK,BP,BN,BB,BR,BQ,BK);
+        arrayToBitBoards(chessBoard,WP,WR,WN,WB,WQ,WK,BP,BR,BN,BB,BQ,BK);
     }
     
     public static void importFEN(String fenString) {

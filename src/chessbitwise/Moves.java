@@ -137,6 +137,7 @@ public class Moves {
                     case 'r' :  score += Rating.WR_PS_Table[end/8][end%8]-Rating.WR_PS_Table[start/8][start%8];
                             break;
                     case 'n' :  score += Rating.WN_PS_Table[end/8][end%8]-Rating.WN_PS_Table[start/8][start%8];
+                                System.out.println(move +" : "+(Rating.WN_PS_Table[end/8][end%8]-Rating.WN_PS_Table[start/8][start%8]));
                             break;
                     case 'b' :  score += Rating.WB_PS_Table[end/8][end%8]-Rating.WB_PS_Table[start/8][start%8];
                             break;        

@@ -43,9 +43,9 @@ public class PrincipalVariation {
                 if (((WKt&Moves.unsafeForWhite(WPt,WRt,WNt,WBt,WQt,WKt,BPt,BRt,BNt,BBt,BQt,BKt))==0 && WhiteToMove) ||
                         ((BKt&Moves.unsafeForBlack(WPt,WRt,WNt,WBt,WQt,WKt,BPt,BRt,BNt,BBt,BQt,BKt))==0 && !WhiteToMove)) {
                     moveScore = zWSearch(moves.substring(i,i+4),1 - beta,WPt,WRt,WNt,WBt,WQt,WKt,BPt,BRt,BNt,BBt,BQt,BKt,EPt,CWKt,CWQt,CBKt,CBQt,!WhiteToMove,depth+1);
-                    if(Integer.parseInt(move.substring(4)) < 0)
+                    if(Integer.parseInt(moveScore.substring(4)) < 0)
                         moveScore = moves.substring(0, 3)+moveScore.substring(5);
-                    else
+                    else if (Integer.parseInt(moveScore.substring(4)) >0)
                         moveScore = moves.substring(0, 3)+"-"+moveScore.substring(4);
                     
                     score = Integer.parseInt(moveScore.substring(4));
@@ -61,7 +61,9 @@ public class PrincipalVariation {
     {
         String scoreList="",sortedScoreList="",sortedMoves="";
         int currentScore=0,score=0;
+        int x1=0,y1=0;
         float x=0,y=0,maxIndex=0;
+        String temp="";
         
         if(moves.length() != 0)
         {
@@ -85,7 +87,7 @@ public class PrincipalVariation {
             {
                 max=Float.parseFloat(scoreList.substring(0, 3)); 
                 maxIndex=0;
-                for(int i=0;i<scoreList.length()-3;i+=3)
+                for(int i=0;i<scoreList.length();i+=3)
                 {
                     currentScore=Integer.parseInt(scoreList.substring(i, i+3));
                     if(Integer.parseInt(scoreList.substring(i, i+3)) > max)
@@ -94,11 +96,17 @@ public class PrincipalVariation {
                         maxIndex=i;
                     }
                 }
-                if(max>0)
-                sortedScoreList+= "0"+(int)max;
+                if((int)max>=0)
+                    if((int)max/10 ==0)
+                        sortedScoreList+= "00"+(int)max;
+                    else
+                        sortedScoreList+= "0"+(int)max;
                 else
-                sortedScoreList+= (int)max;
-                
+                    if((int)max/10 ==0)
+                        sortedScoreList+= "-0"+Integer.toString((int)max).substring(1);
+                    else
+                        sortedScoreList+=(int)max;
+                    
                 sortedMoves += moves.substring((int)((maxIndex/(x+0.0))*y), (int)((maxIndex/(x+0.0))*y)+4);
                 //replace max in score list.
                 if(maxIndex != 0)
@@ -115,11 +123,16 @@ public class PrincipalVariation {
                 y =y-4;
                 j=0;
             }
+            sortedScoreList+=scoreList;
+            sortedMoves+= moves;
+            x1=sortedMoves.length();
+            y1=sortedScoreList.length();
+            
             return sortedMoves;
         }
         return "";
     }
-    public static String pvSearch(String move,int alpha,int beta,long WP,long WN,long WB,long WR,long WQ,long WK,long BP,long BN,long BB,long BR,long BQ,long BK,long EP,boolean CWK,boolean CWQ,boolean CBK,boolean CBQ,boolean WhiteToMove,int depth) 
+    public static String pvSearch(String move,int alpha,int beta,long WP,long WR,long WN,long WB,long WQ,long WK,long BP,long BR,long BN,long BB,long BQ,long BK,long EP,boolean CWK,boolean CWQ,boolean CBK,boolean CBQ,boolean WhiteToMove,int depth) 
     {//using fail soft with negamax
         int bestScore;
         String moveScore="";
@@ -164,8 +177,10 @@ public class PrincipalVariation {
         moveScore = pvSearch(moves.substring(firstLegalMove,firstLegalMove+4),-beta,-alpha,WPt,WRt,WNt,WBt,WQt,WKt,BPt,BRt,BNt,BBt,BQt,BKt,EPt,CWKt,CWQt,CBKt,CBQt,!WhiteToMove,depth+1);
         if(Integer.parseInt(moveScore.substring(4))<0)
             moveScore = moveScore.substring(0, 4)+moveScore.substring(5);
-        else
+        else if(Integer.parseInt(moveScore.substring(4))>0)
             moveScore = moveScore.substring(0, 4)+"-"+moveScore.substring(4);
+        else
+            moveScore = moveScore.substring(0, 4)+moveScore.substring(4);
         bestScore= Integer.parseInt(moveScore.substring(4));
         UserInterface.moveCounter++;
         if (bestScore == UserInterface.MATE_SCORE)
@@ -223,7 +238,7 @@ public class PrincipalVariation {
             zwmoveScore = zWSearch(moves.substring(i,i+4),-alpha,WPt,WRt,WNt,WBt,WQt,WKt,BPt,BRt,BNt,BBt,BQt,BKt,EPt,CWKt,CWQt,CBKt,CBQt,!WhiteToMove,depth+1);
             if(Integer.parseInt(zwmoveScore.substring(4)) <0)
                 zwmoveScore = moves.substring(0, 4)+zwmoveScore.substring(5);
-            else
+            else if(Integer.parseInt(zwmoveScore.substring(4)) > 0)
                 zwmoveScore = moves.substring(0, 4)+"-"+zwmoveScore.substring(4);
     
             score=Integer.parseInt(zwmoveScore.substring(4));
@@ -233,7 +248,7 @@ public class PrincipalVariation {
                 moveScore = pvSearch(moveScore.substring(0, 4),-beta,-alpha,WP,WR,WN,WB,WQ,WK,BP,BR,BN,BB,BQ,BK,EP,CWK,CWQ,CBK,CBQ,!WhiteToMove,depth+1);
                 if(Integer.parseInt(moveScore.substring(4))<0)
                     moveScore = moveScore.substring(0, 4)+moveScore.substring(5);
-                else
+                else if(Integer.parseInt(moveScore.substring(4))<0)
                     moveScore = moveScore.substring(0, 4)+"-"+moveScore.substring(4);
 
                 bestScore = Integer.parseInt(moveScore.substring(4));
