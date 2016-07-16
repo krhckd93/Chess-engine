@@ -138,8 +138,7 @@ public class UCI {
         else
         {
             moves=PrincipalVariation.getFirstLegalMove(moves,UserInterface.WP,UserInterface.WN,UserInterface.WB,UserInterface.WR,UserInterface.WQ,UserInterface.WK,UserInterface.BP,UserInterface.BN,UserInterface.BB,UserInterface.BR,UserInterface.BQ,UserInterface.BK,UserInterface.EP,UserInterface.CWK,UserInterface.CWQ,UserInterface.CBK,UserInterface.CBQ,UserInterface.WhiteToMove);
-            System.out.println("bestmove "+moves.subSequence(0, 4));
-//            System.out.println("bestmove "+moveToAlgebra(moves.substring(0,4)));
+            System.out.println("bestmove "+moveToAlgebra(moves.substring(0,4)));
             System.out.println(moves.substring(0,4));
         }
     }

@@ -7,9 +7,6 @@ import java.awt.event.*;
 public class UserInterface extends JPanel {
     static long WP=0L,WR=0L,WN=0L,WB=0L,WQ=0L,WK=0L,BP=0L,BR=0L,BN=0L,BB=0L,BQ=0L,BK=0L,EP=0L;
     static boolean CWK=true,CWQ=true,CBK=true,CBQ=true,WhiteToMove=false;
-    static long UniversalWP=0L,UniversalWN=0L,UniversalWB=0L,UniversalWR=0L,
-            UniversalWQ=0L,UniversalWK=0L,UniversalBP=0L,UniversalBN=0L,UniversalBB=0L,UniversalBR=0L,
-            UniversalBQ=0L,UniversalBK=0L,uNIVERSALep=0L;
     static boolean UniversalCastleWK=true,UniversalCastleWQ=true,UniversalCastleBK=true,UniversalCastleBQ=true;
     int humanIsWhite=1;
     static int rating =0;
@@ -84,5 +81,9 @@ public class UserInterface extends JPanel {
     public static void main(String[] args){
         
         UCI.uciCommunication();
+        BoardGeneration.initiateStandardChess();
+//        String moveScore = PrincipalVariation.pvSearch("a1a2",-1000,1000,WP,WN,WB,WR,WQ,WK,BP,BN,BB,BR,BQ,BK,EP,CWK,CWQ,CBK,CBQ,WhiteToMove,searchDepth);
+        String moveScore = Moves.possibleMovesB(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ, WhiteToMove);
+        System.out.println("moveScore :"+ moveScore);
     }
 }
