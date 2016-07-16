@@ -1,21 +1,23 @@
 package chessbitwise;
 
 public class PrincipalVariation {
-    public static int zWSearch(int beta,long WP,long WN,long WB,long WR,long WQ,long WK,long BP,long BN,long BB,long BR,long BQ,long BK,long EP,boolean CWK,boolean CWQ,boolean CBK,boolean CBQ,boolean WhiteToMove,int depth)
+    public static String zWSearch(String move,int beta,long WP,long WR,long WN,long WB,long WQ,long WK,long BP,long BR,long BN,long BB,long BQ,long BK,long EP,boolean CWK,boolean CWQ,boolean CBK,boolean CBQ,boolean WhiteToMove,int depth)
     {//fail-hard zero window search, returns either beta-1 or beta
         int score = Integer.MIN_VALUE;
+        String moveScore="";
         //alpha == beta - 1
         //this is either a cut- or all-node
         if (depth == UserInterface.searchDepth)
         {
-            score = Rating.evaluate(WP, WN, WB, WR, WQ, WK, BP, BN, BB, BR, BQ, BK, EP, CWK, CWQ, CBK, CBQ);
-            return score;
+            score = Rating.evaluate(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ,WhiteToMove);
+            moveScore = move+score;
+            return moveScore;
         }
             String moves;
             if (WhiteToMove) {
-                moves=Moves.possibleMovesW(WP,WN,WB,WR,WQ,WK,BP,BN,BB,BR,BQ,BK,EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
+                moves=Moves.possibleMovesW(WP,WR,WN,WB,WQ,WK,BP,BR,BN,BB,BQ,BK,EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
             } else {
-                moves=Moves.possibleMovesB(WP,WN,WB,WR,WQ,WK,BP,BN,BB,BR,BQ,BK,EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
+                moves=Moves.possibleMovesB(WP,WR,WN,WB,WQ,WK,BP,BR,BN,BB,BQ,BK,EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
             }
             //sortMoves();
             for (int i=0;i<moves.length();i+=4) {
@@ -40,16 +42,22 @@ public class PrincipalVariation {
                 }
                 if (((WKt&Moves.unsafeForWhite(WPt,WRt,WNt,WBt,WQt,WKt,BPt,BRt,BNt,BBt,BQt,BKt))==0 && WhiteToMove) ||
                         ((BKt&Moves.unsafeForBlack(WPt,WRt,WNt,WBt,WQt,WKt,BPt,BRt,BNt,BBt,BQt,BKt))==0 && !WhiteToMove)) {
-                    score = -zWSearch(1 - beta,WPt,WRt,WNt,WBt,WQt,WKt,BPt,BRt,BNt,BBt,BQt,BKt,EPt,CWKt,CWQt,CBKt,CBQt,!WhiteToMove,depth+1);
+                    moveScore = zWSearch(moves.substring(i,i+4),1 - beta,WPt,WRt,WNt,WBt,WQt,WKt,BPt,BRt,BNt,BBt,BQt,BKt,EPt,CWKt,CWQt,CBKt,CBQt,!WhiteToMove,depth+1);
+                    if(Integer.parseInt(move.substring(4)) < 0)
+                        moveScore = moves.substring(0, 3)+moveScore.substring(5);
+                    else
+                        moveScore = moves.substring(0, 3)+"-"+moveScore.substring(4);
+                    
+                    score = Integer.parseInt(moveScore.substring(4));
                 }
                 if (score >= beta)
                 {
-                    return score;//fail-hard beta-cutoff
+                    return moveScore;//fail-hard beta-cutoff
                 }
             }
-        return beta - 1;//fail-hard, return alpha
+        return move+(beta - 1);//fail-hard, return alpha
     }
-    public static String getFirstLegalMove(String moves,long WP,long WN,long WB,long WR,long WQ,long WK,long BP,long BN,long BB,long BR,long BQ,long BK,long EP,boolean CWK,boolean CWQ,boolean CBK,boolean CBQ,boolean WhiteToMove) 
+    public static String getFirstLegalMove(String moves,long WP,long WR,long WN,long WB,long WQ,long WK,long BP,long BR,long BN,long BB,long BQ,long BK,long EP,boolean CWK,boolean CWQ,boolean CBK,boolean CBQ,boolean WhiteToMove) 
     {
         String scoreList="",sortedScoreList="",sortedMoves="";
         int currentScore=0,score=0;
@@ -58,21 +66,26 @@ public class PrincipalVariation {
         if(moves.length() != 0)
         {
             for (int i=0;i<moves.length();i+=4) {
-                score = Rating.pieceSquare(moves.substring(i, i+4), WP, WN, WB, WR, WQ, WK, BP, BN, BB, BR, BQ, BK, EP, CWK, CWQ, CBK, CBQ);
+                score = Rating.pieceSquare(moves.substring(i, i+4), WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ);
                 if(score >=0 )
-                    scoreList += "0"+ Integer.toString(score);
+                    if(score/10==0)
+                        scoreList += "00"+ Integer.toString(score);
+                    else
+                        scoreList += "0"+ Integer.toString(score);
                 else 
-                    scoreList += Integer.toString(score);
+                    if(score/10 != 0)
+                        scoreList += Integer.toString(score);
+                    else
+                        scoreList += "-0"+Integer.toString(score).substring(1);
             }
-            
             x=scoreList.length();
             y=moves.length();
             float max=Float.parseFloat(scoreList.substring(0,3)+".0");
-            for(int j=0;j<scoreList.length()-3;j+=3)
+            for(int j=0;j<scoreList.length();j+=3)
             {
                 max=Float.parseFloat(scoreList.substring(0, 3)); 
                 maxIndex=0;
-                for(int i=0;i<scoreList.length();i+=3)
+                for(int i=0;i<scoreList.length()-3;i+=3)
                 {
                     currentScore=Integer.parseInt(scoreList.substring(i, i+3));
                     if(Integer.parseInt(scoreList.substring(i, i+3)) > max)
@@ -97,7 +110,6 @@ public class PrincipalVariation {
                 {
                     scoreList=scoreList.substring((int)maxIndex+3);
                     moves=moves.substring((int)((maxIndex/(x+0.0))*y)+4);
-                    
                 }
                 x=x-3;
                 y =y-4;
@@ -107,27 +119,28 @@ public class PrincipalVariation {
         }
         return "";
     }
-    public static int pvSearch(int alpha,int beta,long WP,long WN,long WB,long WR,long WQ,long WK,long BP,long BN,long BB,long BR,long BQ,long BK,long EP,boolean CWK,boolean CWQ,boolean CBK,boolean CBQ,boolean WhiteToMove,int depth) 
+    public static String pvSearch(String move,int alpha,int beta,long WP,long WN,long WB,long WR,long WQ,long WK,long BP,long BN,long BB,long BR,long BQ,long BK,long EP,boolean CWK,boolean CWQ,boolean CBK,boolean CBQ,boolean WhiteToMove,int depth) 
     {//using fail soft with negamax
         int bestScore;
+        String moveScore="";
         int bestMoveIndex = -1;
         if (depth == UserInterface.searchDepth)
         {
-            bestScore = Rating.evaluate(WP, WN, WB, WR, WQ, WK, BP, BN, BB, BR, BQ, BK, EP, CWK, CWQ, CBK, CBQ);
-            return bestScore;
+            bestScore = Rating.evaluate(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ,WhiteToMove);
+            return move+bestScore;
         }
         String moves;
         if (WhiteToMove) {
-            moves=Moves.possibleMovesW(WP,WN,WB,WR,WQ,WK,BP,BN,BB,BR,BQ,BK,EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
+            moves=Moves.possibleMovesW(WP,WR,WN,WB,WQ,WK,BP,BR,BN,BB,BQ,BK,EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
         } else {
-            moves=Moves.possibleMovesB(WP,WN,WB,WR,WQ,WK,BP,BN,BB,BR,BQ,BK,EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
+            moves=Moves.possibleMovesB(WP,WR,WN,WB,WQ,WK,BP,BR,BN,BB,BQ,BK,EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
         }
         //sortMoves();
         int firstLegalMove = 0;
-        moves=getFirstLegalMove(moves,WP,WN,WB,WR,WQ,WK,BP,BN,BB,BR,BQ,BK,EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
+        moves=getFirstLegalMove(moves,WP,WR,WN,WB,WQ,WK,BP,BR,BN,BB,BQ,BK,EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
         if (moves.length() ==0)
         {
-            return WhiteToMove ? UserInterface.MATE_SCORE : -UserInterface.MATE_SCORE;
+            return WhiteToMove ? "0000"+UserInterface.MATE_SCORE : "0000"+-UserInterface.MATE_SCORE;
         }
         long WPt=Moves.makeMove(WP, moves.substring(firstLegalMove,firstLegalMove+4), 'P'), WNt=Moves.makeMove(WN, moves.substring(firstLegalMove,firstLegalMove+4), 'N'),
                 WBt=Moves.makeMove(WB, moves.substring(firstLegalMove,firstLegalMove+4), 'B'), WRt=Moves.makeMove(WR, moves.substring(firstLegalMove,firstLegalMove+4), 'R'),
@@ -148,11 +161,16 @@ public class PrincipalVariation {
             else if (((1L<<start)&BR&(1L<<7))!=0) {CBKt=false;}
             else if (((1L<<start)&BR&1L)!=0) {CBQt=false;}
         }
-        bestScore = -pvSearch(-beta,-alpha,WPt,WNt,WBt,WRt,WQt,WKt,BPt,BNt,BBt,BRt,BQt,BKt,EPt,CWKt,CWQt,CBKt,CBQt,!WhiteToMove,depth+1);
+        moveScore = pvSearch(moves.substring(firstLegalMove,firstLegalMove+4),-beta,-alpha,WPt,WRt,WNt,WBt,WQt,WKt,BPt,BRt,BNt,BBt,BQt,BKt,EPt,CWKt,CWQt,CBKt,CBQt,!WhiteToMove,depth+1);
+        if(Integer.parseInt(moveScore.substring(4))<0)
+            moveScore = moveScore.substring(0, 4)+moveScore.substring(5);
+        else
+            moveScore = moveScore.substring(0, 4)+"-"+moveScore.substring(4);
+        bestScore= Integer.parseInt(moveScore.substring(4));
         UserInterface.moveCounter++;
-        if (Math.abs(bestScore) == UserInterface.MATE_SCORE)
+        if (bestScore == UserInterface.MATE_SCORE)
         {
-            return bestScore;
+            return moveScore;
         }
         if (bestScore > alpha)
         {
@@ -162,13 +180,16 @@ public class PrincipalVariation {
                 //It is not a PV move
                 //However, it will usually cause a cutoff so it can
                 //be considered a best move if no other move is found
-                return bestScore;
+                return moveScore;
             }
             alpha = bestScore;
         }
         bestMoveIndex = firstLegalMove;
         for (int i=firstLegalMove;i<moves.length();i+=4) {
             int score;
+            String zwmoveScore="";
+            zwmoveScore = moves.substring(i,i+4);
+
             UserInterface.moveCounter++;
             //legal, non-castle move
             WPt=Moves.makeMove(WP, moves.substring(i,i+4), 'P');
@@ -199,14 +220,27 @@ public class PrincipalVariation {
                 else if (((1L<<start)&BR&(1L<<7))!=0) {CBKt=false;}
                 else if (((1L<<start)&BR&1L)!=0) {CBQt=false;}
             }
-            score = -zWSearch(-alpha,WPt,WNt,WBt,WRt,WQt,WKt,BPt,BNt,BBt,BRt,BQt,BKt,EPt,CWKt,CWQt,CBKt,CBQt,!WhiteToMove,depth+1);
+            zwmoveScore = zWSearch(moves.substring(i,i+4),-alpha,WPt,WRt,WNt,WBt,WQt,WKt,BPt,BRt,BNt,BBt,BQt,BKt,EPt,CWKt,CWQt,CBKt,CBQt,!WhiteToMove,depth+1);
+            if(Integer.parseInt(zwmoveScore.substring(4)) <0)
+                zwmoveScore = moves.substring(0, 4)+zwmoveScore.substring(5);
+            else
+                zwmoveScore = moves.substring(0, 4)+"-"+zwmoveScore.substring(4);
+    
+            score=Integer.parseInt(zwmoveScore.substring(4));
             if ((score > alpha) && (score < beta))
             {
                 //research with window [alpha;beta]
-                bestScore = -pvSearch(-beta,-alpha,WP,WN,WB,WR,WQ,WK,BP,BN,BB,BR,BQ,BK,EP,CWK,CWQ,CBK,CBQ,!WhiteToMove,depth+1);
+                moveScore = pvSearch(moveScore.substring(0, 4),-beta,-alpha,WP,WR,WN,WB,WQ,WK,BP,BR,BN,BB,BQ,BK,EP,CWK,CWQ,CBK,CBQ,!WhiteToMove,depth+1);
+                if(Integer.parseInt(moveScore.substring(4))<0)
+                    moveScore = moveScore.substring(0, 4)+moveScore.substring(5);
+                else
+                    moveScore = moveScore.substring(0, 4)+"-"+moveScore.substring(4);
+
+                bestScore = Integer.parseInt(moveScore.substring(4));
                 if (score>alpha)
                 {
                     bestMoveIndex = i;
+                    moveScore = zwmoveScore.substring(0, 4)+bestScore;
                     alpha = score;
                 }
             }
@@ -214,15 +248,34 @@ public class PrincipalVariation {
             {
                 if (score >= beta)
                 {
-                    return score;
+                    return zwmoveScore;
                 }
+                moveScore = zwmoveScore.substring(0, 3)+score;
                 bestScore = score;
                 if (Math.abs(bestScore) == UserInterface.MATE_SCORE)
                 {
-                    return bestScore;
+                    return moveScore;
                 }
             }
         }
-        return bestScore;
+        return moveScore;
     }
+//    public static String alphabeta(String move,int alpha,int beta,long WP,long WN,long WB,long WR,long WQ,long WK,long BP,long BN,long BB,long BR,long BQ,long BK,long EP,boolean CWK,boolean CWQ,boolean CBK,boolean CBQ,boolean WhiteToMove,int depth)
+//    {
+//        String moves="";
+//        if (WhiteToMove) {
+//            moves=Moves.possibleMovesW(WP,WN,WB,WR,WQ,WK,BP,BN,BB,BR,BQ,BK,EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
+//        } else {
+//            moves=Moves.possibleMovesB(WP,WN,WB,WR,WQ,WK,BP,BN,BB,BR,BQ,BK,EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
+//        }
+//        int firstLegalMove=0;
+//        moves = getFirstLegalMove(moves,WP,WN,WB,WR,WQ,WK,BP,BN,BB,BR,BQ,BK,EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
+//        
+//        for(int i=0;i<moves.length();i+=4)
+//        {
+//            
+//        }
+//        
+//        return "";
+//    }
 }
