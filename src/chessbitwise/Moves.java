@@ -290,13 +290,21 @@ public class Moves {
         OCCUPIED=WP|WN|WB|WR|WQ|WK|BP|BN|BB|BR|BQ|BK;
         EMPTY=~OCCUPIED;
         
-        String list=possibleBP(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP,CWK,CWQ,CBK,CBQ,WhiteToMove)+
-                possibleN(OCCUPIED,BN,WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP,CWK,CWQ,CBK,CBQ,WhiteToMove)+
-                possibleB(OCCUPIED,BB,WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP,CWK,CWQ,CBK,CBQ,WhiteToMove)+
-                possibleR(OCCUPIED,BR,WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP,CWK,CWQ,CBK,CBQ,WhiteToMove)+
-                possibleQ(OCCUPIED,BQ,WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP,CWK,CWQ,CBK,CBQ,WhiteToMove)+
-                possibleK(OCCUPIED,BK,WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP,CWK,CWQ,CBK,CBQ,WhiteToMove)+
-                possibleCB(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
+//        String list=possibleBP(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP,CWK,CWQ,CBK,CBQ,WhiteToMove)+
+//                possibleN(OCCUPIED,BN,WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP,CWK,CWQ,CBK,CBQ,WhiteToMove)+
+//                possibleB(OCCUPIED,BB,WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP,CWK,CWQ,CBK,CBQ,WhiteToMove)+
+//                possibleR(OCCUPIED,BR,WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP,CWK,CWQ,CBK,CBQ,WhiteToMove)+
+//                possibleQ(OCCUPIED,BQ,WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP,CWK,CWQ,CBK,CBQ,WhiteToMove)+
+//                possibleK(OCCUPIED,BK,WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP,CWK,CWQ,CBK,CBQ,WhiteToMove)+
+//                possibleCB(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
+//        
+        String list=possibleBP(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
+                list += possibleN(OCCUPIED,BN,WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
+                list +=possibleB(OCCUPIED,BB,WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
+                list +=possibleR(OCCUPIED,BR,WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
+                list +=possibleQ(OCCUPIED,BQ,WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
+                list +=possibleK(OCCUPIED,BK,WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
+                list +=possibleCB(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
         return list;
     }
     

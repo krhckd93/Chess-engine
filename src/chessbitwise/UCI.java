@@ -120,26 +120,27 @@ public class UCI {
             
             BoardGeneration.drawArray(UserInterface.WP,UserInterface.WR,UserInterface.WN,UserInterface.WB,UserInterface.WQ,UserInterface.WK,UserInterface.BP,UserInterface.BR,UserInterface.BN,UserInterface.BB,UserInterface.BQ,UserInterface.BK);
         }
-        String move;
+        String moves;
         if (WhiteToMoveTemp) {
-            move=Moves.possibleMovesW(UserInterface.WP,UserInterface.WR,UserInterface.WN,UserInterface.WB,UserInterface.WQ,UserInterface.WK,UserInterface.BP,UserInterface.BR,UserInterface.BN,UserInterface.BB,UserInterface.BQ,UserInterface.BK,UserInterface.EP,UserInterface.CWK,UserInterface.CWQ,UserInterface.CBK,UserInterface.CBQ,UserInterface.WhiteToMove);
-            for(int i=0;i<move.length();i+=4)
-            System.out.print(move.substring(i, i+4)+" ");
+            moves=Moves.possibleMovesW(UserInterface.WP,UserInterface.WR,UserInterface.WN,UserInterface.WB,UserInterface.WQ,UserInterface.WK,UserInterface.BP,UserInterface.BR,UserInterface.BN,UserInterface.BB,UserInterface.BQ,UserInterface.BK,UserInterface.EP,UserInterface.CWK,UserInterface.CWQ,UserInterface.CBK,UserInterface.CBQ,UserInterface.WhiteToMove);
+            for(int i=0;i<moves.length();i+=4)
+            System.out.print(" "+moves.substring(i, i+4));
         } 
         else {
-            move=Moves.possibleMovesB(UserInterface.WP,UserInterface.WR,UserInterface.WN,UserInterface.WB,UserInterface.WQ,UserInterface.WK,UserInterface.BP,UserInterface.BR,UserInterface.BN,UserInterface.BB,UserInterface.BQ,UserInterface.BK,UserInterface.EP,UserInterface.CWK,UserInterface.CWQ,UserInterface.CBK,UserInterface.CBQ,UserInterface.WhiteToMove);
-            for(int i=0;i<move.length();i+=4)
-            System.out.print(move.substring(i, i+4)+" ");
+            moves=Moves.possibleMovesB(UserInterface.WP,UserInterface.WR,UserInterface.WN,UserInterface.WB,UserInterface.WQ,UserInterface.WK,UserInterface.BP,UserInterface.BR,UserInterface.BN,UserInterface.BB,UserInterface.BQ,UserInterface.BK,UserInterface.EP,UserInterface.CWK,UserInterface.CWQ,UserInterface.CBK,UserInterface.CBQ,UserInterface.WhiteToMove);
+            for(int i=0;i<moves.length();i+=4)
+            System.out.print(moves.substring(i, i+4)+" ");
         }
-        if(move.length()==0)
+        if(moves.length()==0)
         {
             System.out.println("bestmove 0000");
         }
         else
         {
-            int index=(int)(Math.floor(Math.random()*(move.length()/4))*4);
-            System.out.println("bestmove "+moveToAlgebra(move.substring(index,index+4)));
-            System.out.println(move.substring(index,index+4));
+            moves=PrincipalVariation.getFirstLegalMove(moves,UserInterface.WP,UserInterface.WN,UserInterface.WB,UserInterface.WR,UserInterface.WQ,UserInterface.WK,UserInterface.BP,UserInterface.BN,UserInterface.BB,UserInterface.BR,UserInterface.BQ,UserInterface.BK,UserInterface.EP,UserInterface.CWK,UserInterface.CWQ,UserInterface.CBK,UserInterface.CBQ,UserInterface.WhiteToMove);
+            System.out.println("bestmove "+moves.subSequence(0, 4));
+//            System.out.println("bestmove "+moveToAlgebra(moves.substring(0,4)));
+            System.out.println(moves.substring(0,4));
         }
     }
     public static void inputGo()
@@ -151,7 +152,7 @@ public class UCI {
             moves=Moves.possibleMovesB(UserInterface.WP,UserInterface.WN,UserInterface.WB,UserInterface.WR,UserInterface.WQ,UserInterface.WK,UserInterface.BP,UserInterface.BN,UserInterface.BB,UserInterface.BR,UserInterface.BQ,UserInterface.BK,UserInterface.EP,UserInterface.CWK,UserInterface.CWQ,UserInterface.CBK,UserInterface.CBQ,UserInterface.WhiteToMove);
         }
         moves=PrincipalVariation.getFirstLegalMove(moves,UserInterface.WP,UserInterface.WN,UserInterface.WB,UserInterface.WR,UserInterface.WQ,UserInterface.WK,UserInterface.BP,UserInterface.BN,UserInterface.BB,UserInterface.BR,UserInterface.BQ,UserInterface.BK,UserInterface.EP,UserInterface.CWK,UserInterface.CWQ,UserInterface.CBK,UserInterface.CBQ,UserInterface.WhiteToMove);
-        System.out.println("bestmove "+moves.subSequence(0, 4));
+        //System.out.println("bestmove "+moves.subSequence(0, 4));
     }
     public static void inputPrint()
     {
@@ -163,7 +164,6 @@ public class UCI {
         int start=0,end=0;
         if (Character.isDigit(move.charAt(3))) {//'regular' move
             start=(Character.getNumericValue(move.charAt(0))*8)+(Character.getNumericValue(move.charAt(1)));
-            System.out.println((Character.getNumericValue(move.charAt(0))*8));
             end=(Character.getNumericValue(move.charAt(2))*8)+(Character.getNumericValue(move.charAt(3)));
         } else if (move.charAt(3)=='P') {//pawn promotion
             if (Character.isUpperCase(move.charAt(2))) {
