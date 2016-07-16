@@ -6,13 +6,14 @@ import java.awt.event.*;
 
 public class UserInterface extends JPanel {
     static long WP=0L,WR=0L,WN=0L,WB=0L,WQ=0L,WK=0L,BP=0L,BR=0L,BN=0L,BB=0L,BQ=0L,BK=0L,EP=0L;
-    static boolean CWK=true,CWQ=true,CBK=true,CBQ=true,WhiteToMove=false;
+    static boolean CWK=true,CWQ=true,CBK=true,CBQ=true;
     static boolean UniversalCastleWK=true,UniversalCastleWQ=true,UniversalCastleBK=true,UniversalCastleBQ=true;
     int humanIsWhite=1;
     static int rating =0;
-    static int searchDepth=9,moveCounter;
+    static int searchDepth=1,moveCounter;
     static int MATE_SCORE=5000,NULL_INT=Integer.MIN_VALUE;
     static int index;
+    static boolean WhiteToMove=true;
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -80,10 +81,11 @@ public class UserInterface extends JPanel {
 
     public static void main(String[] args){
         
-        UCI.uciCommunication();
+        //UCI.uciCommunication();
         BoardGeneration.initiateStandardChess();
-//        String moveScore = PrincipalVariation.pvSearch("a1a2",-1000,1000,WP,WN,WB,WR,WQ,WK,BP,BN,BB,BR,BQ,BK,EP,CWK,CWQ,CBK,CBQ,WhiteToMove,searchDepth);
-        String moveScore = Moves.possibleMovesB(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ, WhiteToMove);
+        System.out.println(Moves.possibleMovesW(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ, WhiteToMove));
+        String moveScore = PrincipalVariation.pvSearch("",-10000,10000,WP,WR,WN,WB,WQ,WK,BP,BR,BN,BB,BQ,BK,EP,CWK,CWQ,CBK,CBQ,WhiteToMove,0);
+//        String moveScore = Moves.possibleMovesB(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ, WhiteToMove);
         System.out.println("moveScore :"+ moveScore);
     }
 }
