@@ -109,6 +109,39 @@ public class Moves {
         }
         return board;
     }
+    public static long unmakeMove(long board, String move, char type) 
+    {
+        if (Character.isDigit(move.charAt(3))) {//'regular' move
+            int end=(Character.getNumericValue(move.charAt(0))*8)+(Character.getNumericValue(move.charAt(1)));
+            int start=(Character.getNumericValue(move.charAt(2))*8)+(Character.getNumericValue(move.charAt(3)));
+            if (((board>>>start)&1)==1) {board&=~(1L<<start); board|=(1L<<end);} else { board&=~(1L<<end); }
+        } else if (move.charAt(3)=='P') {//pawn promotion
+            int start, end;
+            if (Character.isUpperCase(move.charAt(2))) {
+                end=Long.numberOfTrailingZeros(FileMasks8[move.charAt(0)-'0']&RankMasks8[1]);
+                start=Long.numberOfTrailingZeros(FileMasks8[move.charAt(1)-'0']&RankMasks8[0]);
+            } else {
+                end=Long.numberOfTrailingZeros(FileMasks8[move.charAt(0)-'0']&RankMasks8[6]);
+                start=Long.numberOfTrailingZeros(FileMasks8[move.charAt(1)-'0']&RankMasks8[7]);
+            }
+            if (type==move.charAt(2)) {board|=(1L<<end);} else {board&=~(1L<<start); board&=~(1L<<end);}
+        } else if (move.charAt(3)=='E') {//en passant
+            int start, end;
+            if (move.charAt(2)=='W') {
+                end=Long.numberOfTrailingZeros(FileMasks8[move.charAt(0)-'0']&RankMasks8[3]);
+                start=Long.numberOfTrailingZeros(FileMasks8[move.charAt(1)-'0']&RankMasks8[2]);
+                board&=~(FileMasks8[move.charAt(1)-'0']&RankMasks8[3]);
+            } else {
+                end=Long.numberOfTrailingZeros(FileMasks8[move.charAt(0)-'0']&RankMasks8[4]);
+                start=Long.numberOfTrailingZeros(FileMasks8[move.charAt(1)-'0']&RankMasks8[5]);
+                board&=~(FileMasks8[move.charAt(1)-'0']&RankMasks8[4]);
+            }
+            if (((board>>>start)&1)==1) {board&=~(1L<<start); board|=(1L<<end);}
+        } else {
+            System.out.print("ERROR: Invalid move type");
+        }
+        return board;
+    }
     public static int moveScore(long board, String move, char type) 
     {
         int score=0;
@@ -132,17 +165,17 @@ public class Moves {
                             break;       
                     case 'K' :  score += Rating.WK_PST[end/8][end%8]-Rating.WK_PST[start/8][start%8];
                             break;       
-                    case 'p' :  score += Rating.WP_PST[end/8][end%8]-Rating.WP_PST[start/8][start%8];
+                    case 'p' :  score += Rating.BP_PST[end/8][end%8]-Rating.BP_PST[start/8][start%8];
                             break;
-                    case 'r' :  score += Rating.WR_PST[end/8][end%8]-Rating.WR_PST[start/8][start%8];
+                    case 'r' :  score += Rating.BR_PST[end/8][end%8]-Rating.BR_PST[start/8][start%8];
                             break;
-                    case 'n' :  score += Rating.WN_PST[end/8][end%8]-Rating.WN_PST[start/8][start%8];
+                    case 'n' :  score += Rating.BN_PST[end/8][end%8]-Rating.BN_PST[start/8][start%8];
                             break;
-                    case 'b' :  score += Rating.WB_PST[end/8][end%8]-Rating.WB_PST[start/8][start%8];
+                    case 'b' :  score += Rating.BB_PST[end/8][end%8]-Rating.BB_PST[start/8][start%8];
                             break;        
-                    case 'q' :  score += Rating.WQ_PST[end/8][end%8]-Rating.WQ_PST[start/8][start%8];
+                    case 'q' :  score += Rating.BQ_PST[end/8][end%8]-Rating.BQ_PST[start/8][start%8];
                             break;       
-                    case 'k' :  score += Rating.WK_PST[end/8][end%8]-Rating.WK_PST[start/8][start%8];
+                    case 'k' :  score += Rating.BK_PST[end/8][end%8]-Rating.BK_PST[start/8][start%8];
                             break;       
                 }
             }
@@ -158,7 +191,6 @@ public class Moves {
             }
             if (type==move.charAt(2)) 
             {
-                board|=(1L<<end);
                 switch (type)
                 {
                     case 'P' :  score += Rating.WP_PST[end/8][end%8]-Rating.WP_PST[start/8][start%8];
@@ -187,7 +219,7 @@ public class Moves {
                             break;       
                 }
             } 
-            else {board&=~(1L<<start); board&=~(1L<<end);}
+            
         } else if (move.charAt(3)=='E') {//en passant
             int start, end;
             if (move.charAt(2)=='W') {
@@ -257,6 +289,15 @@ public class Moves {
         return rookBoard;
     }
     public static long makeMoveEP(long board,String move) {
+        if (Character.isDigit(move.charAt(3))) {
+            int start=(Character.getNumericValue(move.charAt(0))*8)+(Character.getNumericValue(move.charAt(1)));
+            if ((Math.abs(move.charAt(0)-move.charAt(2))==2)&&(((board>>>start)&1)==1)) {//pawn double push
+                return FileMasks8[move.charAt(1)-'0'];
+            }
+        }
+        return 0;
+    }
+    public static long unmakeMoveEP(long board,String move) {
         if (Character.isDigit(move.charAt(3))) {
             int start=(Character.getNumericValue(move.charAt(0))*8)+(Character.getNumericValue(move.charAt(1)));
             if ((Math.abs(move.charAt(0)-move.charAt(2))==2)&&(((board>>>start)&1)==1)) {//pawn double push

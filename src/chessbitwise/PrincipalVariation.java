@@ -60,7 +60,7 @@ public class PrincipalVariation {
             }
         return move+(beta - 1);//fail-hard, return alpha
     }
-    public static String getFirstLegalMove(String moves,long WP,long WR,long WN,long WB,long WQ,long WK,long BP,long BR,long BN,long BB,long BQ,long BK,long EP,boolean CWK,boolean CWQ,boolean CBK,boolean CBQ,boolean WhiteToMove) 
+    public static String moveOrdering(String moves,long WP,long WR,long WN,long WB,long WQ,long WK,long BP,long BR,long BN,long BB,long BQ,long BK,long EP,boolean CWK,boolean CWQ,boolean CBK,boolean CBQ,boolean WhiteToMove) 
     {
         String scoreList="",sortedScoreList="",sortedMoves="";
         int currentScore=0,score=0;
@@ -154,7 +154,7 @@ public class PrincipalVariation {
         }
         //sortMoves();
         int firstLegalMove = 0;
-        moves=getFirstLegalMove(moves,WP,WR,WN,WB,WQ,WK,BP,BR,BN,BB,BQ,BK,EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
+        moves=moveOrdering(moves,WP,WR,WN,WB,WQ,WK,BP,BR,BN,BB,BQ,BK,EP,CWK,CWQ,CBK,CBQ,WhiteToMove);
         if (moves.length() ==0)
         {
             return WhiteToMove ? "0000"+UserInterface.MATE_SCORE : "0000"+-UserInterface.MATE_SCORE;

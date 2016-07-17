@@ -10,10 +10,10 @@ public class UserInterface extends JPanel {
     static boolean UniversalCastleWK=true,UniversalCastleWQ=true,UniversalCastleBK=true,UniversalCastleBQ=true;
     int humanIsWhite=1;
     static int rating =0;
-    static int searchDepth=7,moveCounter;
+    static int searchDepth=1,moveCounter;
     static int MATE_SCORE=5000,NULL_INT=Integer.MIN_VALUE;
     static int index;
-    static boolean WhiteToMove=false;
+    static boolean WhiteToMove=true;
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -85,6 +85,7 @@ public class UserInterface extends JPanel {
 //        System.out.println(Moves.possibleMovesW(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ, WhiteToMove));
         String moveScore = PrincipalVariation.pvSearch("",-10000,10000,WP,WR,WN,WB,WQ,WK,BP,BR,BN,BB,BQ,BK,EP,CWK,CWQ,CBK,CBQ,WhiteToMove,0);
 //        String moveScore = Moves.possibleMovesB(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ, WhiteToMove);
+//        int score = Rating.pieceSquare("0122", WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ);
         System.out.println("moveScore :"+ moveScore);
     }
 }

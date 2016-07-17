@@ -11,13 +11,13 @@ public class Rating {
                                 {00,00,00,00,00,00,00,00}};
     
     static int [][] WN_PST=    {{-50,-40,-30,-30,-30,-30,-40,-50}, 
-                                {-40,-20,00,00,00,00,-20,-40}, 
-                                {-30,00,10,15,15,10,00,-30},   
-                                {-30,05,15,20,20,15,05,-30},
-                                {-30,00,15,20,20,15,00,-30},   
-                                {-30,05,10,15,15,10,05,-30},   
-                                {-40,-20,00,05,05,00,-20,-40}, 
-                                {-50,-40,-30,-30,-30,-40,-50}};
+                                {-40,-20,  0,  0,  0,  0,-20,-40}, 
+                                {-30,  0, 10, 15, 15, 10,  0,-30},   
+                                {-30,  5, 15, 20, 20, 15,  5,-30},
+                                {-30,  0, 15, 20, 20, 15,  0,-30},   
+                                {-30,  5, 10, 15, 15, 10,  5,-30},   
+                                {-40,-20,  0,  5,  5,  0,-20,-40}, 
+                                {-50,-40,-30,-30,-30,-30,-40,-50}};
     
     static int [][] WR_PST=    {{00,00,00,00,00,00,00,00}, 
                                 {05,10,10,10,10,10,10,05}, 
@@ -130,8 +130,7 @@ public class Rating {
                                 {-30,-10, 20, 30, 30, 20,-10,-30},
                                 {-30,-30,-10,  0,  0,-10,-30,-30},
                                 {-50,-40,-30,-20,-20,-30,-20,-50}};
-                                
-
+                   
     static int PIECE_VALUE_WP=100;          static int PIECE_VALUE_BP=100;
     static int PIECE_VALUE_WN=300;          static int PIECE_VALUE_BN=300;
     static int PIECE_VALUE_WB=300;          static int PIECE_VALUE_BB=300;
@@ -165,7 +164,7 @@ public class Rating {
     public static int evaluate(String move,long WP,long WR,long WN,long WB,long WQ,long WK,long BP,long BR,long BN,long BB,long BQ,long BK,long EP,boolean CWK,boolean CWQ,boolean CBK,boolean CBQ, boolean WhiteToMove)
     {
         int score=boardEvaluation(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ,WhiteToMove);
-        score += pieceSquare(move,WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ);
+        score += moveEvaluation(move,WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ);
         score += positionEvaluation(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ,WhiteToMove);
         score += mobility(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ,WhiteToMove);
         return score;
@@ -173,13 +172,42 @@ public class Rating {
     
     public static int pieceSquare(String move, long WP,long WR,long WN,long WB,long WQ,long WK,long BP,long BR,long BN,long BB,long BQ,long BK,long EP,boolean CWK,boolean CWQ,boolean CBK,boolean CBQ)
     {
-        //moveScore
         long WPt=Moves.makeMove(WP, move, 'P'), WNt=Moves.makeMove(WN, move, 'N'),
                 WBt=Moves.makeMove(WB, move, 'B'), WRt=Moves.makeMove(WR, move, 'R'),
                 WQt=Moves.makeMove(WQ, move, 'Q'), WKt=Moves.makeMove(WK, move, 'K'),
                 BPt=Moves.makeMove(BP, move, 'p'), BNt=Moves.makeMove(BN, move, 'n'),
                 BBt=Moves.makeMove(BB, move, 'b'), BRt=Moves.makeMove(BR, move, 'r'),
                 BQt=Moves.makeMove(BQ, move, 'q'), BKt=Moves.makeMove(BK, move, 'k'),
+                EPt=Moves.makeMoveEP(WP|BP,move);
+        WRt=Moves.makeMoveCastle(WRt, WK|BK, move, 'R');
+        BRt=Moves.makeMoveCastle(BRt, WK|BK, move, 'r');
+        boolean CWKt=CWK,CWQt=CWQ,CBKt=CBK,CBQt=CBQ;
+        if (Character.isDigit(move.charAt(3))) {//'regular' move
+            int start=(Character.getNumericValue(move.charAt(0))*8)+(Character.getNumericValue(move.charAt(1)));
+            if (((1L<<start)&WK)!=0) {CWKt=false; CWQt=false;}
+            else if (((1L<<start)&BK)!=0) {CBKt=false; CBQt=false;}
+            else if (((1L<<start)&WR&(1L<<63))!=0) {CWKt=false;}
+            else if (((1L<<start)&WR&(1L<<56))!=0) {CWQt=false;}
+            else if (((1L<<start)&BR&(1L<<7))!=0) {CBKt=false;}
+            else if (((1L<<start)&BR&1L)!=0) {CBQt=false;}
+        }
+        int score = Moves.moveScore(WP, move, 'P')+Moves.moveScore(WN, move, 'N')
+              + Moves.moveScore(WB, move, 'B') + Moves.moveScore(WR, move, 'R')
+              + Moves.moveScore(WQ, move, 'Q') + Moves.moveScore(WK, move, 'K')
+              + Moves.moveScore(BP, move, 'p') + Moves.moveScore(BN, move, 'n')
+              + Moves.moveScore(BB, move, 'b') + Moves.moveScore(BR, move, 'r')
+              + Moves.moveScore(BQ, move, 'q') + Moves.moveScore(BK, move, 'k');
+        
+        return score;
+    }
+    public static int moveEvaluation(String move, long WP,long WR,long WN,long WB,long WQ,long WK,long BP,long BR,long BN,long BB,long BQ,long BK,long EP,boolean CWK,boolean CWQ,boolean CBK,boolean CBQ)
+    {
+        long WPt=Moves.makeMove(WP, move, 'P'), WNt=Moves.makeMove(WN, move, 'N'),
+                WBt=Moves.unmakeMove(WB, move, 'B'), WRt=Moves.unmakeMove(WR, move, 'R'),
+                WQt=Moves.unmakeMove(WQ, move, 'Q'), WKt=Moves.unmakeMove(WK, move, 'K'),
+                BPt=Moves.unmakeMove(BP, move, 'p'), BNt=Moves.unmakeMove(BN, move, 'n'),
+                BBt=Moves.unmakeMove(BB, move, 'b'), BRt=Moves.unmakeMove(BR, move, 'r'),
+                BQt=Moves.unmakeMove(BQ, move, 'q'), BKt=Moves.unmakeMove(BK, move, 'k'),
                 EPt=Moves.makeMoveEP(WP|BP,move);
         WRt=Moves.makeMoveCastle(WRt, WK|BK, move, 'R');
         BRt=Moves.makeMoveCastle(BRt, WK|BK, move, 'r');
