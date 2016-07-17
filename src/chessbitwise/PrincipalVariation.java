@@ -40,6 +40,9 @@ public class PrincipalVariation {
                     else if (((1L<<start)&BR&(1L<<7))!=0) {CBKt=false;}
                     else if (((1L<<start)&BR&1L)!=0) {CBQt=false;}
                 }
+                System.out.println("ZW");
+                BoardGeneration.drawArray(WPt, WRt, WNt, WBt, WQt, WKt, BPt, BRt, BNt, BBt, BQt, BKt);
+                System.out.println();
                 if (((WKt&Moves.unsafeForWhite(WPt,WRt,WNt,WBt,WQt,WKt,BPt,BRt,BNt,BBt,BQt,BKt))==0 && WhiteToMove) ||
                         ((BKt&Moves.unsafeForBlack(WPt,WRt,WNt,WBt,WQt,WKt,BPt,BRt,BNt,BBt,BQt,BKt))==0 && !WhiteToMove)) {
                     moveScore = zWSearch(moves.substring(i,i+4),1 - beta,WPt,WRt,WNt,WBt,WQt,WKt,BPt,BRt,BNt,BBt,BQt,BKt,EPt,CWKt,CWQt,CBKt,CBQt,!WhiteToMove,depth+1);
@@ -175,6 +178,9 @@ public class PrincipalVariation {
             else if (((1L<<start)&BR&(1L<<7))!=0) {CBKt=false;}
             else if (((1L<<start)&BR&1L)!=0) {CBQt=false;}
         }
+        System.out.println("PVS");
+        BoardGeneration.drawArray(WPt, WRt, WNt, WBt, WQt, WKt, BPt, BRt, BNt, BBt, BQt, BKt);
+        System.out.println();
         moveScore = pvSearch(moves.substring(firstLegalMove,firstLegalMove+4),-beta,-alpha,WPt,WRt,WNt,WBt,WQt,WKt,BPt,BRt,BNt,BBt,BQt,BKt,EPt,CWKt,CWQt,CBKt,CBQt,!WhiteToMove,depth+1);
         if(Integer.parseInt(moveScore.substring(4))<0)
             moveScore = moveScore.substring(0, 4)+moveScore.substring(5);
@@ -238,6 +244,9 @@ public class PrincipalVariation {
                 else if (((1L<<start)&BR&(1L<<7))!=0) {CBKt=false;}
                 else if (((1L<<start)&BR&1L)!=0) {CBQt=false;}
             }
+            System.out.println("PVS");
+            BoardGeneration.drawArray(WPt, WRt, WNt, WBt, WQt, WKt, BPt, BRt, BNt, BBt, BQt, BKt);
+            System.out.println();
             zwmoveScore = zWSearch(moves.substring(i,i+4),-alpha,WPt,WRt,WNt,WBt,WQt,WKt,BPt,BRt,BNt,BBt,BQt,BKt,EPt,CWKt,CWQt,CBKt,CBQt,!WhiteToMove,depth+1);
             if(Integer.parseInt(zwmoveScore.substring(4)) <0)
                 zwmoveScore = moves.substring(0, 4)+zwmoveScore.substring(5);
