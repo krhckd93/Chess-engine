@@ -120,30 +120,29 @@ public class Moves {
                 board&=~(1L<<start); board|=(1L<<end);
                 switch (type)
                 {
-                    case 'P' :  score += Rating.WP_PS_Table[end/8][end%8]-Rating.WP_PS_Table[start/8][start%8];
+                    case 'P' :  score += Rating.WP_PST[end/8][end%8]-Rating.WP_PST[start/8][start%8];
                             break;
-                    case 'R' :  score += Rating.WR_PS_Table[end/8][end%8]-Rating.WR_PS_Table[start/8][start%8];
+                    case 'R' :  score += Rating.WR_PST[end/8][end%8]-Rating.WR_PST[start/8][start%8];
                             break;
-                    case 'N' :  score += Rating.WN_PS_Table[end/8][end%8]-Rating.WN_PS_Table[start/8][start%8];
+                    case 'N' :  score += Rating.WN_PST[end/8][end%8]-Rating.WN_PST[start/8][start%8];
                             break;
-                    case 'B' :  score += Rating.WB_PS_Table[end/8][end%8]-Rating.WB_PS_Table[start/8][start%8];
+                    case 'B' :  score += Rating.WB_PST[end/8][end%8]-Rating.WB_PST[start/8][start%8];
                             break;        
-                    case 'Q' :  score += Rating.WQ_PS_Table[end/8][end%8]-Rating.WQ_PS_Table[start/8][start%8];
+                    case 'Q' :  score += Rating.WQ_PST[end/8][end%8]-Rating.WQ_PST[start/8][start%8];
                             break;       
-                    case 'K' :  score += Rating.WK_PS_Table[end/8][end%8]-Rating.WK_PS_Table[start/8][start%8];
+                    case 'K' :  score += Rating.WK_PST[end/8][end%8]-Rating.WK_PST[start/8][start%8];
                             break;       
-                    case 'p' :  score += Rating.WP_PS_Table[end/8][end%8]-Rating.WP_PS_Table[start/8][start%8];
+                    case 'p' :  score += Rating.WP_PST[end/8][end%8]-Rating.WP_PST[start/8][start%8];
                             break;
-                    case 'r' :  score += Rating.WR_PS_Table[end/8][end%8]-Rating.WR_PS_Table[start/8][start%8];
+                    case 'r' :  score += Rating.WR_PST[end/8][end%8]-Rating.WR_PST[start/8][start%8];
                             break;
-                    case 'n' :  score += Rating.WN_PS_Table[end/8][end%8]-Rating.WN_PS_Table[start/8][start%8];
-                                System.out.println(move +" : "+(Rating.WN_PS_Table[end/8][end%8]-Rating.WN_PS_Table[start/8][start%8]));
+                    case 'n' :  score += Rating.WN_PST[end/8][end%8]-Rating.WN_PST[start/8][start%8];
                             break;
-                    case 'b' :  score += Rating.WB_PS_Table[end/8][end%8]-Rating.WB_PS_Table[start/8][start%8];
+                    case 'b' :  score += Rating.WB_PST[end/8][end%8]-Rating.WB_PST[start/8][start%8];
                             break;        
-                    case 'q' :  score += Rating.WQ_PS_Table[end/8][end%8]-Rating.WQ_PS_Table[start/8][start%8];
+                    case 'q' :  score += Rating.WQ_PST[end/8][end%8]-Rating.WQ_PST[start/8][start%8];
                             break;       
-                    case 'k' :  score += Rating.WK_PS_Table[end/8][end%8]-Rating.WK_PS_Table[start/8][start%8];
+                    case 'k' :  score += Rating.WK_PST[end/8][end%8]-Rating.WK_PST[start/8][start%8];
                             break;       
                 }
             }
@@ -162,29 +161,29 @@ public class Moves {
                 board|=(1L<<end);
                 switch (type)
                 {
-                    case 'P' :  score += Rating.WP_PS_Table[end/8][end%8]-Rating.WP_PS_Table[start/8][start%8];
+                    case 'P' :  score += Rating.WP_PST[end/8][end%8]-Rating.WP_PST[start/8][start%8];
                             break;
-                    case 'R' :  score += Rating.WR_PS_Table[end/8][end%8]-Rating.WR_PS_Table[start/8][start%8];
+                    case 'R' :  score += Rating.WR_PST[end/8][end%8]-Rating.WR_PST[start/8][start%8];
                             break;
-                    case 'N' :  score += Rating.WN_PS_Table[end/8][end%8]-Rating.WN_PS_Table[start/8][start%8];
+                    case 'N' :  score += Rating.WN_PST[end/8][end%8]-Rating.WN_PST[start/8][start%8];
                             break;
-                    case 'B' :  score += Rating.WB_PS_Table[end/8][end%8]-Rating.WB_PS_Table[start/8][start%8];
+                    case 'B' :  score += Rating.WB_PST[end/8][end%8]-Rating.WB_PST[start/8][start%8];
                             break;        
-                    case 'Q' :  score += Rating.WQ_PS_Table[end/8][end%8]-Rating.WQ_PS_Table[start/8][start%8];
+                    case 'Q' :  score += Rating.WQ_PST[end/8][end%8]-Rating.WQ_PST[start/8][start%8];
                             break;       
-                    case 'K' :  score += Rating.WK_PS_Table[end/8][end%8]-Rating.WK_PS_Table[start/8][start%8];
+                    case 'K' :  score += Rating.WK_PST[end/8][end%8]-Rating.WK_PST[start/8][start%8];
                             break;       
-                    case 'p' :  score += Rating.WP_PS_Table[end/8][end%8]-Rating.WP_PS_Table[start/8][start%8];
+                    case 'p' :  score += Rating.WP_PST[end/8][end%8]-Rating.WP_PST[start/8][start%8];
                             break;
-                    case 'r' :  score += Rating.WR_PS_Table[end/8][end%8]-Rating.WR_PS_Table[start/8][start%8];
+                    case 'r' :  score += Rating.WR_PST[end/8][end%8]-Rating.WR_PST[start/8][start%8];
                             break;
-                    case 'n' :  score += Rating.WN_PS_Table[end/8][end%8]-Rating.WN_PS_Table[start/8][start%8];
+                    case 'n' :  score += Rating.WN_PST[end/8][end%8]-Rating.WN_PST[start/8][start%8];
                             break;
-                    case 'b' :  score += Rating.WB_PS_Table[end/8][end%8]-Rating.WB_PS_Table[start/8][start%8];
+                    case 'b' :  score += Rating.WB_PST[end/8][end%8]-Rating.WB_PST[start/8][start%8];
                             break;        
-                    case 'q' :  score += Rating.WQ_PS_Table[end/8][end%8]-Rating.WQ_PS_Table[start/8][start%8];
+                    case 'q' :  score += Rating.WQ_PST[end/8][end%8]-Rating.WQ_PST[start/8][start%8];
                             break;       
-                    case 'k' :  score += Rating.WK_PS_Table[end/8][end%8]-Rating.WK_PS_Table[start/8][start%8];
+                    case 'k' :  score += Rating.WK_PST[end/8][end%8]-Rating.WK_PST[start/8][start%8];
                             break;       
                 }
             } 
@@ -204,29 +203,29 @@ public class Moves {
             {board&=~(1L<<start); board|=(1L<<end);
             switch (type)
                 {
-                    case 'P' :  score += Rating.WP_PS_Table[end/8][end%8]-Rating.WP_PS_Table[start/8][start%8];
+                    case 'P' :  score += Rating.WP_PST[end/8][end%8]-Rating.WP_PST[start/8][start%8];
                             break;
-                    case 'R' :  score += Rating.WR_PS_Table[end/8][end%8]-Rating.WR_PS_Table[start/8][start%8];
+                    case 'R' :  score += Rating.WR_PST[end/8][end%8]-Rating.WR_PST[start/8][start%8];
                             break;
-                    case 'N' :  score += Rating.WN_PS_Table[end/8][end%8]-Rating.WN_PS_Table[start/8][start%8];
+                    case 'N' :  score += Rating.WN_PST[end/8][end%8]-Rating.WN_PST[start/8][start%8];
                             break;
-                    case 'B' :  score += Rating.WB_PS_Table[end/8][end%8]-Rating.WB_PS_Table[start/8][start%8];
+                    case 'B' :  score += Rating.WB_PST[end/8][end%8]-Rating.WB_PST[start/8][start%8];
                             break;        
-                    case 'Q' :  score += Rating.WQ_PS_Table[end/8][end%8]-Rating.WQ_PS_Table[start/8][start%8];
+                    case 'Q' :  score += Rating.WQ_PST[end/8][end%8]-Rating.WQ_PST[start/8][start%8];
                             break;       
-                    case 'K' :  score += Rating.WK_PS_Table[end/8][end%8]-Rating.WK_PS_Table[start/8][start%8];
+                    case 'K' :  score += Rating.WK_PST[end/8][end%8]-Rating.WK_PST[start/8][start%8];
                             break;       
-                    case 'p' :  score += Rating.WP_PS_Table[end/8][end%8]-Rating.WP_PS_Table[start/8][start%8];
+                    case 'p' :  score += Rating.WP_PST[end/8][end%8]-Rating.WP_PST[start/8][start%8];
                             break;
-                    case 'r' :  score += Rating.WR_PS_Table[end/8][end%8]-Rating.WR_PS_Table[start/8][start%8];
+                    case 'r' :  score += Rating.WR_PST[end/8][end%8]-Rating.WR_PST[start/8][start%8];
                             break;
-                    case 'n' :  score += Rating.WN_PS_Table[end/8][end%8]-Rating.WN_PS_Table[start/8][start%8];
+                    case 'n' :  score += Rating.WN_PST[end/8][end%8]-Rating.WN_PST[start/8][start%8];
                             break;
-                    case 'b' :  score += Rating.WB_PS_Table[end/8][end%8]-Rating.WB_PS_Table[start/8][start%8];
+                    case 'b' :  score += Rating.WB_PST[end/8][end%8]-Rating.WB_PST[start/8][start%8];
                             break;        
-                    case 'q' :  score += Rating.WQ_PS_Table[end/8][end%8]-Rating.WQ_PS_Table[start/8][start%8];
+                    case 'q' :  score += Rating.WQ_PST[end/8][end%8]-Rating.WQ_PST[start/8][start%8];
                             break;       
-                    case 'k' :  score += Rating.WK_PS_Table[end/8][end%8]-Rating.WK_PS_Table[start/8][start%8];
+                    case 'k' :  score += Rating.WK_PST[end/8][end%8]-Rating.WK_PST[start/8][start%8];
                             break;       
                 }}
         } else {

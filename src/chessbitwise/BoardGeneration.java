@@ -1,13 +1,7 @@
 
 package chessbitwise;
 
-import static chessbitwise.UserInterface.WP;
 import java.util.Arrays;
-import java.awt.*;
-import javax.swing.*;
-import java.awt.event.*;
-import static java.awt.image.ImageObserver.WIDTH;
-
 
 public class BoardGeneration {
     public static void initiateStandardChess()
@@ -244,7 +238,6 @@ public class BoardGeneration {
             System.out.print("\n");
         }
     }
-    
     
     public static void main(String[] args) 
     {

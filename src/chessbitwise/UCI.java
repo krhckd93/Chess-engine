@@ -98,6 +98,13 @@ public class UCI {
         if(input.contains("moves"))
         {
             input=input.substring(input.indexOf("moves")+6);
+            if(input.length()/5<=16)
+                Rating.openingGame();
+            else if(input.length()/5<=30 && input.length()/5 >16)
+                Rating.midGame();
+            else
+                Rating.endGame();
+            
             
             while(input.length()>0)
             {

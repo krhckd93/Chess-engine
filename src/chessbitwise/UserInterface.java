@@ -10,10 +10,10 @@ public class UserInterface extends JPanel {
     static boolean UniversalCastleWK=true,UniversalCastleWQ=true,UniversalCastleBK=true,UniversalCastleBQ=true;
     int humanIsWhite=1;
     static int rating =0;
-    static int searchDepth=1,moveCounter;
+    static int searchDepth=7,moveCounter;
     static int MATE_SCORE=5000,NULL_INT=Integer.MIN_VALUE;
     static int index;
-    static boolean WhiteToMove=true;
+    static boolean WhiteToMove=false;
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -79,11 +79,10 @@ public class UserInterface extends JPanel {
         Perft.perft(WP, WN, WB, WR, WQ, WK, BP, BN, BB, BR, BQ, BK, EP, CWK, CWQ, CBK, CBQ, WhiteToMove, WIDTH);
     }
 
-    public static void main(String[] args){
-        
+    public static void main(String[] args){       
         //UCI.uciCommunication();
         BoardGeneration.initiateStandardChess();
-        System.out.println(Moves.possibleMovesW(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ, WhiteToMove));
+//        System.out.println(Moves.possibleMovesW(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ, WhiteToMove));
         String moveScore = PrincipalVariation.pvSearch("",-10000,10000,WP,WR,WN,WB,WQ,WK,BP,BR,BN,BB,BQ,BK,EP,CWK,CWQ,CBK,CBQ,WhiteToMove,0);
 //        String moveScore = Moves.possibleMovesB(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ, WhiteToMove);
         System.out.println("moveScore :"+ moveScore);
