@@ -9,7 +9,7 @@ public class PrincipalVariation {
         //this is either a cut- or all-node
         if (depth == UserInterface.searchDepth)
         {
-            score = Rating.evaluate(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ,WhiteToMove);
+            score = Rating.evaluate(move,WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ,WhiteToMove);
             moveScore = move+score;
             return moveScore;
         }
@@ -63,7 +63,6 @@ public class PrincipalVariation {
         int currentScore=0,score=0;
         int x1=0,y1=0;
         float x=0,y=0,maxIndex=0;
-        String temp="";
         
         if(moves.length() != 0)
         {
@@ -139,8 +138,10 @@ public class PrincipalVariation {
         int bestMoveIndex = -1;
         if (depth == UserInterface.searchDepth)
         {
-            bestScore = Rating.evaluate(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ,WhiteToMove);
-            return move+bestScore;
+            bestScore = Rating.evaluate(move,WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ,WhiteToMove);
+            moveScore=move+bestScore;
+            System.out.println(moveScore);
+            return moveScore;
         }
         String moves;
         if (WhiteToMove) {
@@ -185,6 +186,7 @@ public class PrincipalVariation {
         UserInterface.moveCounter++;
         if (bestScore == UserInterface.MATE_SCORE)
         {
+            System.out.println(moveScore);
             return moveScore;
         }
         if (bestScore > alpha)
@@ -195,6 +197,7 @@ public class PrincipalVariation {
                 //It is not a PV move
                 //However, it will usually cause a cutoff so it can
                 //be considered a best move if no other move is found
+                System.out.println(moveScore);
                 return moveScore;
             }
             alpha = bestScore;
@@ -263,18 +266,22 @@ public class PrincipalVariation {
             {
                 if (score >= beta)
                 {
+                    System.out.println(zwmoveScore);
                     return zwmoveScore;
                 }
                 moveScore = zwmoveScore.substring(0, 3)+score;
                 bestScore = score;
                 if (Math.abs(bestScore) == UserInterface.MATE_SCORE)
                 {
+                    System.out.println(moveScore);
                     return moveScore;
                 }
             }
         }
+        System.out.println(moveScore);
         return moveScore;
     }
+
 //    public static String alphabeta(String move,int alpha,int beta,long WP,long WN,long WB,long WR,long WQ,long WK,long BP,long BN,long BB,long BR,long BQ,long BK,long EP,boolean CWK,boolean CWQ,boolean CBK,boolean CBQ,boolean WhiteToMove,int depth)
 //    {
 //        String moves="";
