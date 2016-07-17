@@ -896,6 +896,19 @@ public class Moves {
         }
     }
     
+    public static int whiteAttack(long WP,long WR,long WN,long WB,long WQ,long WK)
+    {
+        
+        return 0;
+    }
+    
+    public static int blackAttack(long BP,long BR,long BN,long BB,long BQ,long BK)
+    {
+        
+        return 0;
+    }
+    
+    
     public static boolean isUnderCheck()
     {
         // if(WK &( OR of attack of all the enemy pieces))

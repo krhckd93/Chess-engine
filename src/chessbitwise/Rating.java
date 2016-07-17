@@ -166,6 +166,8 @@ public class Rating {
     {
         int score=boardEvaluation(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ,WhiteToMove);
         score += pieceSquare(move,WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ);
+        score += positionEvaluation(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ,WhiteToMove);
+        score += mobility(WP, WR, WN, WB, WQ, WK, BP, BR, BN, BB, BQ, BK, EP, CWK, CWQ, CBK, CBQ,WhiteToMove);
         return score;
     }
     
@@ -326,7 +328,13 @@ public class Rating {
         else 
             return -score;
     }
-    public static int Mobilitiy()
+    public static int positionEvaluation(long WP,long WR,long WN,long WB,long WQ,long WK,long BP,long BR,long BN,long BB,long BQ,long BK,long EP,boolean CWK,boolean CWQ,boolean CBK,boolean CBQ, boolean WhiteToMove)
+    {
+        
+        return 0;
+    }
+    
+    public static int mobility(long WP,long WR,long WN,long WB,long WQ,long WK,long BP,long BR,long BN,long BB,long BQ,long BK,long EP,boolean CWK,boolean CWQ,boolean CBK,boolean CBQ, boolean WhiteToMove)
     {
         
         return 0;

@@ -1,0 +1,7 @@
+To do list
+## debug pvs.
+## complete white Attack and black Attack functions.
+## Complete mobility function.
+## Complete position evaluation function.
+## Implement alpha beta algorithm.
+## Implement Transposition tables.
